@@ -49,6 +49,8 @@ func isValidURL(str string) bool {
 func LoadPlugins(dir string) ([]Plugin, error) {
 	var plugins []Plugin
 
+	// notification of reading plugins
+	sendNotification("Reading plugins...")
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return nil, err
@@ -70,7 +72,8 @@ func LoadPlugins(dir string) ([]Plugin, error) {
 			plugins = append(plugins, plugin)
 		}
 	}
-
+	// notification found n plugins
+	sendNotification(fmt.Sprintf("Found %d plugins", len(plugins)))
 	return plugins, nil
 }
 
@@ -87,14 +90,16 @@ func containsReplacement(text string, plugins []Plugin) bool {
 }
 
 func sendNotification(message string) {
+	duro, _ := toast.Duration("short")
 	iconPath := filepath.Dir(exePath)
 	iconPath = iconPath + "\\icon.png"
 	fmt.Println(iconPath)
 	notification := toast.Notification{
-		AppID:   "Clipboard Master",
-		Title:   "Clipboard Updated",
-		Message: message,
-		Icon:    iconPath,
+		AppID:    "Clipboard Master",
+		Title:    "Clipboard Updated",
+		Message:  message,
+		Icon:     iconPath,
+		Duration: duro,
 	}
 
 	err := notification.Push()
@@ -261,6 +266,11 @@ func onReady(plugins []Plugin) func() {
 				} else {
 					isEnabled = true
 					mEnable.Check()
+					plugins, err := LoadPlugins("./plugins")
+					if err != nil {
+						sendNotification("Error loading plugins: %v" + err.Error())
+					}
+					onReady(plugins)
 				}
 			}
 		}()
