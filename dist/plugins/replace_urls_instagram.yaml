@@ -1,0 +1,4 @@
+name: Replace Instagram URLs
+replacements:
+  - find: "instagram.com"
+    replace: "ddinstagram.com"

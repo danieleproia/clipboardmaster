@@ -19,6 +19,8 @@ import (
 
 const appName = "ClipboardMaster"
 
+var exePath, _ = os.Executable()
+
 var isEnabled = true
 
 // Transformation represents a single find-replace operation
@@ -85,10 +87,14 @@ func containsReplacement(text string, plugins []Plugin) bool {
 }
 
 func sendNotification(message string) {
+	iconPath := filepath.Dir(exePath)
+	iconPath = iconPath + "\\icon.png"
+	fmt.Println(iconPath)
 	notification := toast.Notification{
 		AppID:   "Clipboard Master",
 		Title:   "Clipboard Updated",
 		Message: message,
+		Icon:    iconPath,
 	}
 
 	err := notification.Push()
