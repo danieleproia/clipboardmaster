@@ -1,0 +1,4 @@
+name: Replace Pixiv URLs
+replacements:
+  - find: "pixiv.net"
+    replace: "phixiv.net"

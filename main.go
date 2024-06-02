@@ -49,6 +49,8 @@ func isValidURL(str string) bool {
 func LoadPlugins(dir string) ([]Plugin, error) {
 	var plugins []Plugin
 
+	// notification of reading plugins
+	sendNotification("Updating plugins", "Reading plugins...")
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return nil, err
@@ -70,7 +72,8 @@ func LoadPlugins(dir string) ([]Plugin, error) {
 			plugins = append(plugins, plugin)
 		}
 	}
-
+	// notification found n plugins
+	sendNotification("Updated list of plugins", fmt.Sprintf("Found %d plugins", len(plugins)))
 	return plugins, nil
 }
 
@@ -86,15 +89,17 @@ func containsReplacement(text string, plugins []Plugin) bool {
 	return false
 }
 
-func sendNotification(message string) {
+func sendNotification(title string, message string) {
+	duro, _ := toast.Duration("short")
 	iconPath := filepath.Dir(exePath)
 	iconPath = iconPath + "\\icon.png"
 	fmt.Println(iconPath)
 	notification := toast.Notification{
-		AppID:   "Clipboard Master",
-		Title:   "Clipboard Updated",
-		Message: message,
-		Icon:    iconPath,
+		AppID:    "Clipboard Master",
+		Title:    title,
+		Message:  message,
+		Icon:     iconPath,
+		Duration: duro,
 	}
 
 	err := notification.Push()
@@ -142,7 +147,7 @@ func monitorClipboard(plugins []Plugin) {
 				// Update the clipboard with the processed text
 				clipboard.WriteAll(processedText)
 				// Send a notification
-				sendNotification(processedText)
+				sendNotification("Updated clipboard", processedText)
 			}
 			previousText = text
 		}
@@ -203,7 +208,7 @@ func main() {
 	// Load plugins from the plugins directory
 	plugins, err := LoadPlugins("./plugins")
 	if err != nil {
-		sendNotification("Error loading plugins: %v" + err.Error())
+		sendNotification("Error", "Error loading plugins: %v"+err.Error())
 	}
 
 	// Start the system tray
@@ -236,14 +241,14 @@ func onReady(plugins []Plugin) func() {
 				if mStartup.Checked() {
 					err := setStartup(false)
 					if err != nil {
-						sendNotification("Error setting startup: %v" + err.Error())
+						sendNotification("Error", "Error setting startup: %v"+err.Error())
 					} else {
 						mStartup.Uncheck()
 					}
 				} else {
 					err := setStartup(true)
 					if err != nil {
-						sendNotification("Error setting startup: %v" + err.Error())
+						sendNotification("Error", "Error setting startup: %v"+err.Error())
 					} else {
 						mStartup.Check()
 					}

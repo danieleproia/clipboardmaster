@@ -1,0 +1,41 @@
+{
+    "appName": "ClipboardMaster",
+    "notifications": {
+      "refreshing": {
+        "title": "Refreshing",
+        "message": "Reading plugins..."
+      },
+      "pluginsListUpdated": {
+        "title": "Plugins list updated",
+        "message": "Found %d plugins"
+      },
+      "clipboardUpdated": {
+        "title": "Clipboard updated"
+      },
+      "errorLoadingPlugins": {
+        "title": "Error",
+        "message": "Error loading plugins: %v"
+      },
+      "errorSettingStartup": {
+        "title": "Error",
+        "message": "Error setting startup: %v"
+      }
+    },
+    "systray": {
+      "title": "Clipboard Master",
+      "tooltip": "Clipboard Master",
+      "enable": {
+        "label": "Enable",
+        "tooltip": "Enable/Disable the app"
+      },
+      "bootAtStartup": {
+        "label": "Boot at Startup",
+        "tooltip": "Enable/Disable boot at startup"
+      },
+      "quit": {
+        "label": "Quit",
+        "tooltip": "Quit the application"
+      }
+    }
+  }
+  
