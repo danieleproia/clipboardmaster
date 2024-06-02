@@ -48,7 +48,6 @@ func SaveSettings(filename string, pluginStatus map[string]bool) error {
 		return err
 	}
 	for plugin, status := range pluginStatus {
-		// prettyName := GetPrettyName(plugin)
 		_, err := section.NewKey(plugin, boolToStr(status))
 		if err != nil {
 			return err
