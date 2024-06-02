@@ -36,6 +36,7 @@ replacements:
 ### Short-term
 - Add localization support
 - Add settings window
+- Use a better icon
 
 ### Long-term
 - Add support for more transformation types
