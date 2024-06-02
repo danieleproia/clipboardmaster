@@ -39,7 +39,7 @@ func LoadPlugins(dir string) error {
 	normToPretty = make(map[string]string)
 
 	for _, file := range files {
-		if filepath.Ext(file.Name()) == ".yaml" {
+		if filepath.Ext(file.Name()) == ".yaml" || filepath.Ext(file.Name()) == ".yml" {
 			data, err := ioutil.ReadFile(filepath.Join(dir, file.Name()))
 			if err != nil {
 				return err
