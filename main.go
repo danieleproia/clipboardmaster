@@ -89,7 +89,6 @@ func sendNotification(message string) {
 		AppID:   "Clipboard Master",
 		Title:   "Clipboard Updated",
 		Message: message,
-		Icon:    "assets/icon.png",
 	}
 
 	err := notification.Push()
