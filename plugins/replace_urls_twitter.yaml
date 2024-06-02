@@ -1,6 +1,0 @@
-name: Replace Twitter URLs
-replacements:
-  - find: "x.com"
-    replace: "fixupx.com"
-  - find: "twitter.com"
-    replace: "fxtwitter.com"
