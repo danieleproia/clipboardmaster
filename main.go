@@ -22,6 +22,8 @@ const appName = "ClipboardMaster"
 var exePath, _ = os.Executable()
 
 var isEnabled = true
+var plugins []Plugin
+var pluginStatus map[string]bool
 
 // Transformation represents a single find-replace operation
 type Transformation struct {
@@ -93,7 +95,6 @@ func sendNotification(title string, message string) {
 	duro, _ := toast.Duration("short")
 	iconPath := filepath.Dir(exePath)
 	iconPath = iconPath + "\\icon.png"
-	fmt.Println(iconPath)
 	notification := toast.Notification{
 		AppID:    "Clipboard Master",
 		Title:    title,
@@ -108,10 +109,8 @@ func sendNotification(title string, message string) {
 	}
 }
 
-func monitorClipboard(plugins []Plugin) {
-	var previousText string
+func monitorClipboard(plugins []Plugin, pluginStatus map[string]bool) {
 	var processedText string
-
 	for {
 		// if app is disabled, sleep for a while and check again
 		if !isEnabled {
@@ -126,15 +125,16 @@ func monitorClipboard(plugins []Plugin) {
 		}
 
 		// If the clipboard content has changed and hasn't been processed already
-		if text != previousText && text != processedText {
+		if text != processedText {
 			// Check if the text contains any replacement strings
 			if containsReplacement(text, plugins) {
-				previousText = text
 				continue
 			}
-
 			processedText = text
 			for _, plugin := range plugins {
+				if !pluginStatus[plugin.Name] {
+					continue
+				}
 				for _, transformation := range plugin.Transformations {
 					processedText = strings.ReplaceAll(processedText, transformation.Find, transformation.Replace)
 				}
@@ -149,7 +149,6 @@ func monitorClipboard(plugins []Plugin) {
 				// Send a notification
 				sendNotification("Updated clipboard", processedText)
 			}
-			previousText = text
 		}
 
 		// Sleep for a short duration before checking again
@@ -205,78 +204,106 @@ func isStartupEnabled() bool {
 }
 
 func main() {
+	var err error
 	// Load plugins from the plugins directory
-	plugins, err := LoadPlugins("./plugins")
+	plugins, err = LoadPlugins("./plugins")
 	if err != nil {
 		sendNotification("Error", "Error loading plugins: %v"+err.Error())
 	}
+	// Initialize plugin status map
+	pluginStatus = make(map[string]bool)
+	for _, plugin := range plugins {
+		pluginStatus[plugin.Name] = true
+	}
 
 	// Start the system tray
-	systray.Run(onReady(plugins), onExit)
+	systray.Run(onReady, onExit)
 }
 
-func onReady(plugins []Plugin) func() {
-	return func() {
-		// Set the icon
-		systray.SetIcon(iconData)
-		systray.SetTitle("Clipboard Master")
-		systray.SetTooltip("Clipboard Master")
+func onReady() {
+	// Set the icon
+	systray.SetIcon(iconData)
+	systray.SetTitle("Clipboard Master")
+	systray.SetTooltip("Clipboard Master")
 
-		// add a checkbox to enable/disable the app
-		mEnable := systray.AddMenuItemCheckbox("Enable", "Enable/Disable the app", isEnabled)
-		// add a checkbox for boot at startup
-		mStartup := systray.AddMenuItemCheckbox("Boot at Startup", "Enable/Disable boot at startup", isStartupEnabled())
-		// Add a quit button
-		mQuit := systray.AddMenuItem("Quit", "Quit the application")
+	// add a checkbox to enable/disable the app
+	mEnable := systray.AddMenuItemCheckbox("Enable", "Enable/Disable the app", isEnabled)
+	// add a checkbox for boot at startup
+	mStartup := systray.AddMenuItemCheckbox("Boot at Startup", "Enable/Disable boot at startup", isStartupEnabled())
+	// Add settings menu for plugins
+	mSettings := systray.AddMenuItem("Settings", "Settings")
+	mPluginSettings := make(map[string]*systray.MenuItem)
 
-		// Start monitoring the clipboard in a separate goroutine
-		go func() {
-			monitorClipboard(plugins)
-		}()
-
-		// Handle startup checkbox click
-		go func() {
-			for {
-				<-mStartup.ClickedCh
-				if mStartup.Checked() {
-					err := setStartup(false)
-					if err != nil {
-						sendNotification("Error", "Error setting startup: %v"+err.Error())
-					} else {
-						mStartup.Uncheck()
-					}
-				} else {
-					err := setStartup(true)
-					if err != nil {
-						sendNotification("Error", "Error setting startup: %v"+err.Error())
-					} else {
-						mStartup.Check()
-					}
-				}
-			}
-		}()
-
-		// Handle enable checkbox click
-		go func() {
-			for {
-				<-mEnable.ClickedCh
-				if mEnable.Checked() {
-					isEnabled = false
-					mEnable.Uncheck()
-				} else {
-					isEnabled = true
-					mEnable.Check()
-				}
-			}
-		}()
-
-		// Handle quit button click
-		go func() {
-			<-mQuit.ClickedCh
-			systray.Quit()
-			fmt.Println("Quit")
-		}()
+	for _, plugin := range plugins {
+		mPluginSettings[plugin.Name] = mSettings.AddSubMenuItemCheckbox(plugin.Name, "Enable/Disable "+plugin.Name, true)
 	}
+
+	// Add a quit button
+	mQuit := systray.AddMenuItem("Quit", "Quit the application")
+
+	// Start monitoring the clipboard in a separate goroutine
+	go func() {
+		monitorClipboard(plugins, pluginStatus)
+	}()
+
+	// Handle startup checkbox click
+	go func() {
+		for {
+			<-mStartup.ClickedCh
+			if mStartup.Checked() {
+				err := setStartup(false)
+				if err != nil {
+					sendNotification("Error", "Error setting startup: %v"+err.Error())
+				} else {
+					mStartup.Uncheck()
+				}
+			} else {
+				err := setStartup(true)
+				if err != nil {
+					sendNotification("Error", "Error setting startup: %v"+err.Error())
+				} else {
+					mStartup.Check()
+				}
+			}
+		}
+	}()
+
+	// Handle enable checkbox click
+	go func() {
+		for {
+			<-mEnable.ClickedCh
+			if mEnable.Checked() {
+				isEnabled = false
+				mEnable.Uncheck()
+			} else {
+				isEnabled = true
+				mEnable.Check()
+			}
+		}
+	}()
+
+	// Handle plugin settings checkbox click
+	go func() {
+		for pluginName, menuItem := range mPluginSettings {
+			go func(name string, item *systray.MenuItem) {
+				for {
+					<-item.ClickedCh
+					pluginStatus[name] = !pluginStatus[name]
+					if item.Checked() {
+						item.Uncheck()
+					} else {
+						item.Check()
+					}
+				}
+			}(pluginName, menuItem)
+		}
+	}()
+
+	// Handle quit button click
+	go func() {
+		<-mQuit.ClickedCh
+		systray.Quit()
+	}()
 }
 
 func onExit() {

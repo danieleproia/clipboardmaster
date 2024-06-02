@@ -13,4 +13,4 @@ Copy-Item -Path .\languages -Destination .\dist\languages -Recurse -Force
 # copy plugins folder to dist
 Copy-Item -Path .\plugins -Destination .\dist\plugins -Recurse -Force
 # copy assets\icon.ico to dist
-Copy-Item -Path .\assets\icon.ico -Destination .\dist\icon.ico -Force
+Copy-Item -Path .\assets\icon.ico -Destination .\dist\icon.png -Force
