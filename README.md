@@ -13,7 +13,7 @@ ClipboardMaster is a clipboard management utility written in Go. It monitors the
 ## Usage
 
 1. Clone the repository
-2. Build the project using `go build` (or use the provided powershell script)
+2. use the provided powershell script, since it copies the required folders in the dist folder too
 3. Run the executable
 
 ## Plugins
@@ -30,3 +30,14 @@ replacements:
   - find: "foo"
     replace: "bar"
 ```
+
+# Roadmap
+
+### Short-term
+- Add localization support
+- Add settings window
+- Use a better icon
+
+### Long-term
+- Add support for more transformation types
+- Add support for more clipboard types (currently only text is supported)
