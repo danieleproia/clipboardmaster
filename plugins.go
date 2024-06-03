@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -36,7 +36,7 @@ func LoadPlugins() error {
 		getLocalization("notifications.refreshingPlugins.title"),
 		getLocalization("notifications.refreshingPlugins.message"),
 	)
-	files, err := ioutil.ReadDir("./" + pluginsDir)
+	files, err := os.ReadDir("./" + pluginsDir)
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func LoadPlugins() error {
 
 	for _, file := range files {
 		if filepath.Ext(file.Name()) == ".yaml" || filepath.Ext(file.Name()) == ".yml" {
-			data, err := ioutil.ReadFile(filepath.Join(pluginsDir, file.Name()))
+			data, err := os.ReadFile(filepath.Join(pluginsDir, file.Name()))
 			if err != nil {
 				return err
 			}
@@ -76,6 +76,10 @@ func LoadPlugins() error {
 // GetPlugins returns the list of loaded plugins
 func GetPlugins() []Plugin {
 	return plugins
+}
+
+func GetPluginsNumber() int {
+	return len(plugins)
 }
 
 // ContainsReplacement checks if the text contains any replacement strings
