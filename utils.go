@@ -2,7 +2,6 @@ package main
 
 import (
 	_ "embed"
-	"fmt"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -28,29 +27,49 @@ func SetStartup(enable bool) error {
 
 	exePath, err := os.Executable()
 	if err != nil {
-		return fmt.Errorf("unable to get executable path: %v", err)
+		SendNotification(
+			getLocalization("notifications.errorSettingStartup.title"),
+			getLocalization("notifications.errorSettingStartup.message")+err.Error(),
+		)
+		return err
 	}
 
 	exePath, err = filepath.Abs(exePath)
 	if err != nil {
-		return fmt.Errorf("unable to get absolute path of executable: %v", err)
+		SendNotification(
+			getLocalization("notifications.errorSettingStartup.title"),
+			getLocalization("notifications.errorSettingStartup.message")+err.Error(),
+		)
+		return err
 	}
 
 	k, err := registry.OpenKey(registry.CURRENT_USER, key, registry.SET_VALUE)
 	if err != nil {
-		return fmt.Errorf("unable to open registry key: %v", err)
+		SendNotification(
+			getLocalization("notifications.errorSettingStartup.title"),
+			getLocalization("notifications.errorSettingStartup.message")+err.Error(),
+		)
+		return err
 	}
 	defer k.Close()
 
 	if enable {
 		err = k.SetStringValue(appName, exePath)
 		if err != nil {
-			return fmt.Errorf("unable to set registry value: %v", err)
+			SendNotification(
+				getLocalization("notifications.errorSettingStartup.title"),
+				getLocalization("notifications.errorSettingStartup.message")+err.Error(),
+			)
+			return err
 		}
 	} else {
 		err = k.DeleteValue(appName)
 		if err != nil {
-			return fmt.Errorf("unable to delete registry value: %v", err)
+			SendNotification(
+				getLocalization("notifications.errorSettingStartup.title"),
+				getLocalization("notifications.errorSettingStartup.message")+err.Error(),
+			)
+			return err
 		}
 	}
 	return nil
