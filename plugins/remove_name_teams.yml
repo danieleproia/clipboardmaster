@@ -1,4 +1,0 @@
-name: Remove First line teams
-replacements:
-  - find: "(?s)^\[.*?\] .*? \(.*?\)\n"
-    replace: ""

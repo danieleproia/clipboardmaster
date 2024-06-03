@@ -1,0 +1,4 @@
+name: Shorten Youtube URLs
+replacements:
+  - find: "www.youtube.com/watch?v="
+    replace: "youtu.be/"
