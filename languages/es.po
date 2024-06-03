@@ -18,11 +18,11 @@ msgstr "Iniciar al Encender"
 msgid "systray.bootAtStartup.tooltip"
 msgstr "Habilitar/Deshabilitar inicio al encender"
 
-msgid "systray.settings.label"
-msgstr "Configuración"
+msgid "systray.pluginSettings.label"
+msgstr "Configuración de plugins"
 
-msgid "systray.settings.tooltip"
-msgstr "Abrir configuración"
+msgid "systray.pluginSettings.tooltip"
+msgstr "Abrir configuración de plugins"
 
 msgid "systray.settingsToggle.label"
 msgstr "Habilitar/Deshabilitar"

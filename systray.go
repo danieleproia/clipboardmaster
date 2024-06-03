@@ -22,8 +22,8 @@ func OnReady() {
 		IsStartupEnabled(),
 	)
 	mSettings := systray.AddMenuItem(
-		getLocalization("systray.settings.label"),
-		getLocalization("systray.settings.tooltip"),
+		getLocalization("systray.pluginSettings.label"),
+		getLocalization("systray.pluginSettings.tooltip"),
 	)
 	mPluginSettings := make(map[string]*systray.MenuItem)
 
