@@ -18,11 +18,11 @@ msgstr "Avvio all'Avvio del Sistema"
 msgid "systray.bootAtStartup.tooltip"
 msgstr "Abilita/Disabilita l'avvio all'avvio del sistema"
 
-msgid "systray.settings.label"
-msgstr "Impostazioni"
+msgid "systray.pluginSettings.label"
+msgstr "Plugins"
 
-msgid "systray.settings.tooltip"
-msgstr "Apri le impostazioni"
+msgid "systray.pluginSettings.tooltip"
+msgstr "Apri le impostazioni dei plugins"
 
 msgid "systray.settingsToggle.label"
 msgstr "Abilita/Disabilita"

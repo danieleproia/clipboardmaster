@@ -18,11 +18,11 @@ msgstr "Boot at Startup"
 msgid "systray.bootAtStartup.tooltip"
 msgstr "Enable/Disable boot at startup"
 
-msgid "systray.settings.label"
-msgstr "Settings"
+msgid "systray.pluginSettings.label"
+msgstr "Plugins"
 
-msgid "systray.settings.tooltip"
-msgstr "Open settings"
+msgid "systray.pluginSettings.tooltip"
+msgstr "Open plugins settings"
 
 msgid "systray.settingsToggle.label"
 msgstr "Enable/Disable"

@@ -48,8 +48,8 @@ func generateLocalization() []TranslationPair {
 	return translations
 }
 
+// find the msgstr that corresponds to the msgid
 func getLocalization(msgid string) string {
-	// find the msgstr that corresponds to the msgid
 	for _, translation := range lang {
 		if translation.MsgID == msgid {
 			return translation.MsgStr
