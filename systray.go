@@ -97,7 +97,7 @@ func OnReady() {
 					} else {
 						item.Check()
 					}
-					err := SaveSettings(settingsFile, pluginStatus)
+					err := SavePluginSettings(pluginStatus)
 					if err != nil {
 						SendNotification(
 							getLocalization("notifications.errorSavingSettings.title"),
@@ -116,7 +116,7 @@ func OnReady() {
 }
 
 func OnExit() {
-	err := SaveSettings(settingsFile, pluginStatus)
+	err := SavePluginSettings(pluginStatus)
 	if err != nil {
 		SendNotification(
 			getLocalization("notifications.errorSavingSettings.title"),

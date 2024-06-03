@@ -8,6 +8,7 @@ import (
 )
 
 var lang []TranslationPair
+var language string = "en"
 
 type TranslationPair struct {
 	MsgID  string
@@ -15,9 +16,11 @@ type TranslationPair struct {
 }
 
 // return object containing the localization, reading .po files, getting all the msgid and msgstr pairs
-func generateLocalization(lang_name string) []TranslationPair {
+func generateLocalization() []TranslationPair {
+
+	fmt.Printf("Generating localization for %s\n", language)
 	// read po file
-	file, err := os.Open("languages/" + lang_name + ".po")
+	file, err := os.Open("languages/" + language + ".po")
 	if err != nil {
 		return nil
 	}
@@ -26,7 +29,6 @@ func generateLocalization(lang_name string) []TranslationPair {
 	var translations []TranslationPair
 
 	scanner := bufio.NewScanner(file)
-	fmt.Println("Reading localization file")
 	for scanner.Scan() {
 		line := scanner.Text()
 		if len(line) < 5 { // if line length is less than 5, continue

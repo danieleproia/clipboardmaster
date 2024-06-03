@@ -7,69 +7,69 @@ msgid "systray.tooltip"
 msgstr "Clipboard Master"
 
 msgid "systray.enable.label"
-msgstr "Abilita"
+msgstr "Habilitar"
 
 msgid "systray.enable.tooltip"
-msgstr "Abilita/Disabilita l'app"
+msgstr "Habilitar/Deshabilitar la aplicación"
 
 msgid "systray.bootAtStartup.label"
-msgstr "Avvio all'Avvio del Sistema"
+msgstr "Iniciar al Encender"
 
 msgid "systray.bootAtStartup.tooltip"
-msgstr "Abilita/Disabilita l'avvio all'avvio del sistema"
+msgstr "Habilitar/Deshabilitar inicio al encender"
 
 msgid "systray.settings.label"
-msgstr "Impostazioni"
+msgstr "Configuración"
 
 msgid "systray.settings.tooltip"
-msgstr "Apri le impostazioni"
+msgstr "Abrir configuración"
 
 msgid "systray.settingsToggle.label"
-msgstr "Abilita/Disabilita"
+msgstr "Habilitar/Deshabilitar"
 
 msgid "systray.quit.label"
-msgstr "Esci"
+msgstr "Salir"
 
 msgid "systray.quit.tooltip"
-msgstr "Esci dall'applicazione"
+msgstr "Salir de la aplicación"
 
 # Notifications
 
 msgid "notifications.clipboardUpdated.title"
-msgstr "Appunti aggiornati"
+msgstr "Portapapeles actualizado"
 
 msgid "notifications.refreshingPlugins.title"
-msgstr "Aggiornamento"
+msgstr "Actualizando"
 
 msgid "notifications.refreshingPlugins.message"
-msgstr "Lettura plugin..."
+msgstr "Leyendo plugins..."
 
 msgid "notifications.pluginsListUpdated.title"
-msgstr "Lista plugin aggiornata"
+msgstr "Lista de plugins actualizada"
 
 msgid "notifications.pluginsListUpdated.message"
-msgstr "Trovati %d plugin"
+msgstr "Encontrados %d plugins"
 
 msgid "notifications.errorLoadingPlugins.title"
-msgstr "Errore"
+msgstr "Error"
 
 msgid "notifications.errorLoadingPlugins.message"
-msgstr "Errore nel caricamento dei plugin: %v"
+msgstr "Error al cargar plugins: %v"
 
 msgid "notifications.errorSettingStartup.title"
-msgstr "Errore"
+msgstr "Error"
 
 msgid "notifications.errorSettingStartup.message"
-msgstr "Errore nella configurazione dell'avvio: %v"
+msgstr "Error al configurar el inicio: %v"
 
 msgid "notifications.errorLoadingSettings.title"
-msgstr "Errore"
+msgstr "Error"
 
 msgid "notifications.errorLoadingSettings.message"
-msgstr "Errore nel caricamento delle impostazioni: %v"
+msgstr "Error al cargar la configuración: %v"
 
 msgid "notifications.errorSavingSettings.title"
-msgstr "Errore"
+msgstr "Error"
 
 msgid "notifications.errorSavingSettings.message"
-msgstr "Errore nel salvataggio delle impostazioni: %v"
+msgstr "Error al guardar la configuración: %v"
