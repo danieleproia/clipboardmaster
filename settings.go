@@ -28,23 +28,33 @@ func createSettingsFile() error {
 		}
 	}
 	// Check if the plugins section exists
-	_, err = cfg.GetSection("plugins")
+	plugins, err := cfg.GetSection("plugins")
 	if err != nil {
 		_, err = cfg.NewSection("plugins")
 		if err != nil {
 			return err
 		}
-		for _, plugin := range GetPlugins() {
-			_, err = cfg.Section("plugins").NewKey(plugin.Name, "true")
-			if err != nil {
-				return err
+		// if plugins section is empty, create keys
+		if len(plugins.Keys()) != GetPluginsNumber() {
+			for _, plugin := range GetPlugins() {
+				_, err = plugins.GetKey(plugin.Name)
+				if err != nil {
+					_, err = plugins.NewKey(plugin.Name, "true")
+					if err != nil {
+						return err
+					}
+				}
 			}
 		}
-	}
 
-	languageSection, err = cfg.NewSection("language")
+	}
+	// Check if the language section exists
+	languageSection, err = cfg.GetSection("language")
 	if err != nil {
-		return err
+		languageSection, err = cfg.NewSection("language")
+		if err != nil {
+			return err
+		}
 	}
 	_, err = languageSection.GetKey("language")
 	if err != nil {
@@ -60,8 +70,8 @@ func createSettingsFile() error {
 // LoadSettings reads the plugin statuses from the settings.ini file
 // If the file does not exist, it creates an empty one with all plugins enabled by default
 func LoadSettings() (map[string]bool, error) {
-	createSettingsFile()
 	pluginStatus := make(map[string]bool)
+	createSettingsFile()
 
 	// Load the settings file
 	cfg, err := ini.Load(settingsFile)
@@ -70,19 +80,9 @@ func LoadSettings() (map[string]bool, error) {
 	}
 
 	pluginsSection := cfg.Section("plugins")
-	// if the plugins section has no keys, create them
-	// getplugins.length
-	if len(pluginsSection.Keys()) != GetPluginsNumber() {
-		for _, plugin := range GetPlugins() {
-			_, err := pluginsSection.NewKey(plugin.Name, "true")
-			if err != nil {
-				return nil, err
-			}
-		}
-	} else {
-		for _, key := range pluginsSection.Keys() {
-			pluginStatus[key.Name()] = key.MustBool(true)
-		}
+	for _, key := range pluginsSection.Keys() {
+		pluginStatus[key.Name()] = key.MustBool(true)
+		pluginsSection.Key(key.Name()).SetValue(boolToStr(pluginStatus[key.Name()]))
 	}
 
 	languageSection := cfg.Section("language")
