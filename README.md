@@ -13,7 +13,7 @@ ClipboardMaster is a clipboard management utility written in Go. It monitors the
   - English
   - Italian
   - Spanish (with IA support)
-  change language in the settings.ini file, you can create your own language file in the languages folder
+### change language in the settings.ini file, you can create your own language file in the languages folder
 
 ## Usage
 
