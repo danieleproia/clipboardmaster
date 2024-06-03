@@ -9,11 +9,14 @@ if ($args -contains "--debug") {
 }
 
 # copy languages folder to dist
+Remove-Item -Path .\dist\languages -Recurse -Force
 Copy-Item -Path .\languages -Destination .\dist\ -Recurse -Force
 # copy plugins folder to dist
+Remove-Item -Path .\dist\plugins -Recurse -Force
 Copy-Item -Path .\plugins -Destination .\dist\ -Recurse -Force
 # copy assets\icon.ico to dist
 Copy-Item -Path .\assets\icon.ico -Destination .\dist\icon.png -Force
 
 # create zip file for distribution
+Remove-Item -Path .\dist\$appname-portable.zip -Force
 Compress-Archive -Path .\dist\* -DestinationPath .\dist\$appname-portable.zip -Force
