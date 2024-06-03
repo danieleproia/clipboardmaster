@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strings"
 )
@@ -18,7 +17,6 @@ type TranslationPair struct {
 // return object containing the localization, reading .po files, getting all the msgid and msgstr pairs
 func generateLocalization() []TranslationPair {
 
-	fmt.Printf("Generating localization for %s\n", language)
 	// read po file
 	file, err := os.Open("languages/" + language + ".po")
 	if err != nil {
