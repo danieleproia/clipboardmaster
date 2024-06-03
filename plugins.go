@@ -78,6 +78,10 @@ func GetPlugins() []Plugin {
 	return plugins
 }
 
+func GetPluginsNumber() int {
+	return len(plugins)
+}
+
 // ContainsReplacement checks if the text contains any replacement strings
 func ContainsReplacement(text string) bool {
 	for _, plugin := range plugins {

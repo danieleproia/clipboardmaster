@@ -34,11 +34,11 @@ func createSettingsFile() error {
 		if err != nil {
 			return err
 		}
-	}
-	for _, plugin := range GetPlugins() {
-		_, err = cfg.Section("plugins").NewKey(plugin.Name, "true")
-		if err != nil {
-			return err
+		for _, plugin := range GetPlugins() {
+			_, err = cfg.Section("plugins").NewKey(plugin.Name, "true")
+			if err != nil {
+				return err
+			}
 		}
 	}
 
@@ -71,17 +71,18 @@ func LoadSettings() (map[string]bool, error) {
 
 	pluginsSection := cfg.Section("plugins")
 	// if the plugins section has no keys, create them
-	if len(pluginsSection.Keys()) == 0 {
+	// getplugins.length
+	if len(pluginsSection.Keys()) != GetPluginsNumber() {
 		for _, plugin := range GetPlugins() {
 			_, err := pluginsSection.NewKey(plugin.Name, "true")
 			if err != nil {
 				return nil, err
 			}
 		}
-	}
-
-	for _, key := range pluginsSection.Keys() {
-		pluginStatus[key.Name()] = key.MustBool(true)
+	} else {
+		for _, key := range pluginsSection.Keys() {
+			pluginStatus[key.Name()] = key.MustBool(true)
+		}
 	}
 
 	languageSection := cfg.Section("language")
