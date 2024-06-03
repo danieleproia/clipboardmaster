@@ -4,23 +4,43 @@ import (
 	"github.com/getlantern/systray"
 )
 
+var isEnabled = true
+
 func OnReady() {
 	systray.SetIcon(iconData)
 	systray.SetTitle("Clipboard Master")
 	systray.SetTooltip("Clipboard Master")
 
-	mEnable := systray.AddMenuItemCheckbox("Enable", "Enable/Disable the app", isEnabled)
-	mStartup := systray.AddMenuItemCheckbox("Boot at Startup", "Enable/Disable boot at startup", IsStartupEnabled())
-	mSettings := systray.AddMenuItem("Settings", "Settings")
+	mEnable := systray.AddMenuItemCheckbox(
+		getLocalization("systray.enable.label"),
+		getLocalization("systray.enable.tooltip"),
+		isEnabled,
+	)
+	mStartup := systray.AddMenuItemCheckbox(
+		getLocalization("systray.bootAtStartup.label"),
+		getLocalization("systray.bootAtStartup.tooltip"),
+		IsStartupEnabled(),
+	)
+	mSettings := systray.AddMenuItem(
+		getLocalization("systray.settings.label"),
+		getLocalization("systray.settings.tooltip"),
+	)
 	mPluginSettings := make(map[string]*systray.MenuItem)
 
 	for _, plugin := range GetPlugins() {
 		prettyName := GetPrettyName(plugin.Name)
 		enabled := pluginStatus[plugin.Name]
-		mPluginSettings[plugin.Name] = mSettings.AddSubMenuItemCheckbox(prettyName, "Enable/Disable "+prettyName, enabled)
+		mPluginSettings[plugin.Name] = mSettings.AddSubMenuItemCheckbox(
+			prettyName,
+			getLocalization("systray.settingsToggle.label")+prettyName,
+			enabled,
+		)
 	}
 
-	mQuit := systray.AddMenuItem("Quit", "Quit the application")
+	mQuit := systray.AddMenuItem(
+		getLocalization("systray.quit.label"),
+		getLocalization("systray.quit.tooltip"),
+	)
 
 	go func() {
 		MonitorClipboard(GetPlugins(), pluginStatus)
@@ -32,14 +52,20 @@ func OnReady() {
 			if mStartup.Checked() {
 				err := SetStartup(false)
 				if err != nil {
-					SendNotification("Error", "Error setting startup: %v"+err.Error())
+					SendNotification(
+						getLocalization("notifications.errorSettingStartup.title"),
+						getLocalization("notifications.errorSettingStartup.message")+err.Error(),
+					)
 				} else {
 					mStartup.Uncheck()
 				}
 			} else {
 				err := SetStartup(true)
 				if err != nil {
-					SendNotification("Error", "Error setting startup: %v"+err.Error())
+					SendNotification(
+						getLocalization("notifications.errorSettingStartup.title"),
+						getLocalization("notifications.errorSettingStartup.message")+err.Error(),
+					)
 				} else {
 					mStartup.Check()
 				}
@@ -71,9 +97,12 @@ func OnReady() {
 					} else {
 						item.Check()
 					}
-					err := SaveSettings(settingsFile, pluginStatus)
+					err := SavePluginSettings(pluginStatus)
 					if err != nil {
-						SendNotification("Error", "Error saving settings: %v"+err.Error())
+						SendNotification(
+							getLocalization("notifications.errorSavingSettings.title"),
+							getLocalization("notifications.errorSavingSettings.message")+err.Error(),
+						)
 					}
 				}
 			}(pluginName, menuItem)
@@ -87,8 +116,11 @@ func OnReady() {
 }
 
 func OnExit() {
-	err := SaveSettings(settingsFile, pluginStatus)
+	err := SavePluginSettings(pluginStatus)
 	if err != nil {
-		SendNotification("Error", "Error saving settings: %v"+err.Error())
+		SendNotification(
+			getLocalization("notifications.errorSavingSettings.title"),
+			getLocalization("notifications.errorSavingSettings.message")+err.Error(),
+		)
 	}
 }

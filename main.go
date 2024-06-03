@@ -10,21 +10,26 @@ const appName = "ClipboardMaster"
 
 var exePath, _ = os.Executable()
 
-var isEnabled = true
-var pluginStatus map[string]bool
-
 func main() {
 	var err error
-	// Load plugins from the plugins directory
-	err = LoadPlugins("./plugins")
-	if err != nil {
-		SendNotification("Error", "Error loading plugins: %v"+err.Error())
-	}
-
 	// Load settings from the settings.ini file
-	pluginStatus, err = LoadSettings(settingsFile)
+	pluginStatus, err = LoadSettings()
 	if err != nil {
-		SendNotification("Error", "Error loading settings: %v"+err.Error())
+		SendNotification(
+			getLocalization("notifications.errorLoadingSettings.title"),
+			getLocalization("notifications.errorLoadingSettings.message")+err.Error(),
+		)
+	}
+	// Load localization from the en.po file
+	lang = generateLocalization()
+
+	// Load plugins from the plugins directory
+	err = LoadPlugins()
+	if err != nil {
+		SendNotification(
+			getLocalization("notifications.errorLoadingPlugins.title"),
+			getLocalization("notifications.errorLoadingPlugins.message")+err.Error(),
+		)
 	}
 
 	// Initialize plugin status map if settings not loaded

@@ -9,6 +9,11 @@ ClipboardMaster is a clipboard management utility written in Go. It monitors the
 - Each plugin can define multiple find-replace operations
 - Can be enabled or disabled from the system tray
 - Can be set to start at system boot
+- Localized in:
+  - English
+  - Italian
+  - Spanish (with IA support)
+  change language in the settings.ini file, you can create your own language file in the languages folder
 
 ## Usage
 
@@ -34,7 +39,6 @@ replacements:
 # Roadmap
 
 ### Short-term
-- Add localization support
 - Add settings window
 - Use a better icon
 

@@ -53,7 +53,6 @@ func SetStartup(enable bool) error {
 			return fmt.Errorf("unable to delete registry value: %v", err)
 		}
 	}
-
 	return nil
 }
 
