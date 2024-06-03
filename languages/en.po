@@ -1,0 +1,75 @@
+# Systray
+
+msgid "systray.title"
+msgstr "Clipboard Master"
+
+msgid "systray.tooltip"
+msgstr "Clipboard Master"
+
+msgid "systray.enable.label"
+msgstr "Enable"
+
+msgid "systray.enable.tooltip"
+msgstr "Enable/Disable the app"
+
+msgid "systray.bootAtStartup.label"
+msgstr "Boot at Startup"
+
+msgid "systray.bootAtStartup.tooltip"
+msgstr "Enable/Disable boot at startup"
+
+msgid "systray.settings.label"
+msgstr "Settings"
+
+msgid "systray.settings.tooltip"
+msgstr "Open settings"
+
+msgid "systray.settingsToggle.label"
+msgstr "Enable/Disable"
+
+msgid "systray.quit.label"
+msgstr "Quit"
+
+msgid "systray.quit.tooltip"
+msgstr "Quit the application"
+
+# Notifications
+
+msgid "notifications.clipboardUpdated.title"
+msgstr "Clipboard updated"
+
+msgid "notifications.refreshingPlugins.title"
+msgstr "Refreshing"
+
+msgid "notifications.refreshingPlugins.message"
+msgstr "Reading plugins..."
+
+msgid "notifications.pluginsListUpdated.title"
+msgstr "Plugins list updated"
+
+msgid "notifications.pluginsListUpdated.message"
+msgstr "Found %d plugins"
+
+msgid "notifications.errorLoadingPlugins.title"
+msgstr "Error"
+
+msgid "notifications.errorLoadingPlugins.message"
+msgstr "Error loading plugins: %v"
+
+msgid "notifications.errorSettingStartup.title"
+msgstr "Error"
+
+msgid "notifications.errorSettingStartup.message"
+msgstr "Error setting startup: %v"
+
+msgid "notifications.errorLoadingSettings.title"
+msgstr "Error"
+
+msgid "notifications.errorLoadingSettings.message"
+msgstr "Error loading settings: %v"
+
+msgid "notifications.errorSavingSettings.title"
+msgstr "Error"
+
+msgid "notifications.errorSavingSettings.message"
+msgstr "Error saving settings: %v"

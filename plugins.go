@@ -23,13 +23,17 @@ type Plugin struct {
 
 var (
 	plugins      []Plugin
+	pluginStatus map[string]bool
 	prettyToNorm map[string]string
 	normToPretty map[string]string
 )
 
 // LoadPlugins loads all plugins from the specified directory
 func LoadPlugins(dir string) error {
-	SendNotification("Updating plugins", "Reading plugins...")
+	SendNotification(
+		getLocalization("notifications.refreshingPlugins.title"),
+		getLocalization("notifications.refreshingPlugins.message"),
+	)
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return err
@@ -60,7 +64,10 @@ func LoadPlugins(dir string) error {
 			plugins = append(plugins, plugin)
 		}
 	}
-	SendNotification("Updated list of plugins", fmt.Sprintf("Found %d plugins", len(plugins)))
+	SendNotification(
+		getLocalization("notifications.pluginsListUpdated.title"),
+		fmt.Sprintf(getLocalization("notifications.pluginsListUpdated.message"), len(plugins)),
+	)
 	return nil
 }
 

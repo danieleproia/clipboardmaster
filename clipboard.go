@@ -41,7 +41,10 @@ func MonitorClipboard(plugins []Plugin, pluginStatus map[string]bool) {
 				}
 			}
 			clipboard.WriteAll(processedText)
-			SendNotification("Updated clipboard", processedText)
+			SendNotification(
+				getLocalization("notifications.clipboardUpdated.title"),
+				processedText,
+			)
 		}
 
 		time.Sleep(500 * time.Millisecond)
