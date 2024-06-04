@@ -39,12 +39,12 @@ func MonitorClipboard(plugins []Plugin, pluginStatus map[string]bool) {
 				if strings.Contains(processedText, "?") {
 					processedText = processedText[:strings.Index(processedText, "?")]
 				}
+				clipboard.WriteAll(processedText)
+				SendNotification(
+					getLocalization("notifications.clipboardUpdated.title"),
+					processedText,
+				)
 			}
-			clipboard.WriteAll(processedText)
-			SendNotification(
-				getLocalization("notifications.clipboardUpdated.title"),
-				processedText,
-			)
 		}
 
 		time.Sleep(500 * time.Millisecond)
